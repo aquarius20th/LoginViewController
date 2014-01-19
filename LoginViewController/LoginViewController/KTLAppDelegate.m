@@ -11,12 +11,7 @@
 
 @implementation KTLAppDelegate
 
-#pragma mark - UIApplicationDelegate
-
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-}
+#pragma mark - UIApplicationDelegate methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
