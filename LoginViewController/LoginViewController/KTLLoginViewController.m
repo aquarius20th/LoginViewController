@@ -13,10 +13,10 @@
 
 @interface KTLLoginViewController () <UITextFieldDelegate>
 
-@property (nonatomic, strong) UIBarButtonItem *loginBarButtonItem;
+@property (nonatomic, strong)   UIBarButtonItem *loginBarButtonItem;
 
-@property (nonatomic, strong) UITextField *usernameTextField;
-@property (nonatomic, strong) UITextField *passwordTextField;
+@property (nonatomic, strong)   UITextField     *usernameTextField;
+@property (nonatomic, strong)   UITextField     *passwordTextField;
 
 @end
 
@@ -40,12 +40,6 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 
 #pragma mark - UIViewController lifecycle methods
 
-- (void)didReceiveMemoryWarning
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [super didReceiveMemoryWarning];
-}
-
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -65,7 +59,13 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self updateView];
+    [self updateLoginButton];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.usernameTextField becomeFirstResponder];
 }
 
 #pragma mark - UITableViewCell methods
@@ -123,39 +123,39 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 
 #pragma mark - UITableViewDelegate methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {}
 
 #pragma mark - UITextFieldDelegate methods
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self updateLoginButton];
-    }];
-	return YES;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.usernameTextField)
     {
         [self.passwordTextField becomeFirstResponder];
+        return YES;
     }
     else if (textField == self.passwordTextField)
     {
-        [self updateLoginButton];
         if (YES == self.loginBarButtonItem.enabled)
         {
-            [self loginTapped:textField];
+            [textField resignFirstResponder];
         }
+        else
+        {
+            [self.usernameTextField becomeFirstResponder];
+        }
+        return YES;
     }
 	return NO;
 }
 
-#pragma mark - IBActions methods
+#pragma mark - IBAction methods
+
+/// Applies validation logic as each text field changes
+- (IBAction)textFieldChanged:(id)sender
+{
+    [self updateLoginButton];
+}
 
 /// Acknowledges a successful simulated login attempt
 - (IBAction)loginTapped:(id)sender
@@ -192,20 +192,18 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
     CGRect credentialFieldRect = CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight);
     
     KTLUsernameTextField *userField = [[KTLUsernameTextField alloc] initWithFrame:credentialFieldRect];
+    [userField addTarget:self
+                  action:@selector(textFieldChanged:)
+        forControlEvents:UIControlEventEditingChanged];
     userField.delegate = self;
     self.usernameTextField = userField;
     
     KTLPasswordTextField *pwdField = [[KTLPasswordTextField alloc] initWithFrame:credentialFieldRect];
+    [pwdField addTarget:self
+                  action:@selector(textFieldChanged:)
+        forControlEvents:UIControlEventEditingChanged];
     pwdField.delegate = self;
     self.passwordTextField = pwdField;
-}
-
-- (void)updateView
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self.usernameTextField becomeFirstResponder];
-    }];
-    [self updateLoginButton];
 }
 
 /// Enforces a contrived username & password policy
