@@ -27,7 +27,7 @@
 {
     self.secureTextEntry = YES;
     self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.returnKeyType = UIReturnKeyGo;
+    self.returnKeyType = UIReturnKeyNext;
     self.placeholder = @"Required";
 }
 
