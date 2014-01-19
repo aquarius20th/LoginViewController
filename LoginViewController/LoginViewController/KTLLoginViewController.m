@@ -8,20 +8,12 @@
 
 #import "KTLLoginViewController.h"
 
-@interface KTLLoginViewController ()
-
-<UITextFieldDelegate>
+@interface KTLLoginViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *loginBarButtonItem;
 
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
-
-- (IBAction)loginTapped:(id)sender;
-
-- (void)setupView;
-- (void)updateView;
-- (void)updateLoginButton;
 
 @end
 
@@ -38,11 +30,10 @@ enum KTLLoginRows {
 
 @implementation KTLLoginViewController
 
-// NB: these magic numbers should be addressed
-static CGFloat KTLLoginTextFieldWidth = 180.0f;
-static CGFloat KTLLoginTextFieldHeight = 44.0f;
+static CGFloat      KTLLoginTextFieldWidth = 190.0f;
+static CGFloat      KTLLoginTextFieldHeight = 44.0f;
 
-static NSString *KTLCellReuseIdentifier = @"Cell";
+static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 
 #pragma mark - Initialization
 
@@ -51,7 +42,7 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
-        self.title = @"Contrived Service";      // TODO: localize me
+        self.title = @"Contrived Service";
     }
     return self;
 }
@@ -78,7 +69,7 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
 
 #pragma mark - UITableViewCell
 
-- (void)updateCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -90,43 +81,28 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
             {
                 case KTLLoginSectionRowUsername :
                 {
-                    cell.textLabel.text = @"Username";              // TODO: localize me
+                    cell.textLabel.text = @"User Name";
                     cell.accessoryView = self.usernameTextField;
                     return;
                 }
                 case KTLLoginSectionRowPassword :
                 {
-                    cell.textLabel.text = @"Password";              // TODO: localize me
+                    cell.textLabel.text = @"Password";
                     cell.accessoryView = self.passwordTextField;
                     return;
                 }
-                default :
-                    NSLog(@"%s - unintelligible row %i", __PRETTY_FUNCTION__, indexPath.row);
-                    break;
             }
         }
-        default :
-            NSLog(@"%s - unintelligible section %i", __PRETTY_FUNCTION__, indexPath.section);
-            break;
     }
 }
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return KTLLoginTableSectionCount;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section)
+    if (KTLLoginSection == section)
     {
-        case KTLLoginSection:
-            return KTLLoginSectionRowCount;
-        default :
-            NSLog(@"%s - unintelligible section %i", __PRETTY_FUNCTION__, section);
-            break;
+        return KTLLoginSectionRowCount;
     }
     return 0;
 }
@@ -135,8 +111,13 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KTLCellReuseIdentifier
                                                             forIndexPath:indexPath];
-    [self updateCell:cell forRowAtIndexPath:indexPath];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     return cell;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return KTLLoginTableSectionCount;
 }
 
 #pragma mark - UITableViewDelegate
@@ -193,7 +174,7 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
 - (void)setupView
 {
     // navigation item
-    self.loginBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Login"   // TODO: localize me
+    self.loginBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Login"
                                                                style:UIBarButtonItemStyleDone
                                                               target:self
                                                               action:@selector(loginTapped:)];
@@ -204,7 +185,6 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
                                                    reuseIdentifier:KTLCellReuseIdentifier];
     [self.tableView registerClass:[cell class]
            forCellReuseIdentifier:KTLCellReuseIdentifier];
-
     
     // text fields
     UITextField *userField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight)];
@@ -214,7 +194,7 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
     userField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     userField.delegate = self;
     userField.returnKeyType = UIReturnKeyNext;
-    userField.placeholder = @"Enter username";      // TODO: localize me
+    userField.placeholder = @"email@example.com";
     self.usernameTextField = userField;
     
     UITextField *pwdField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight)];
@@ -222,7 +202,7 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
     pwdField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     pwdField.delegate = self;
     pwdField.returnKeyType = UIReturnKeyGo;
-    pwdField.placeholder = @"Required";             // TODO: localize me
+    pwdField.placeholder = @"Required";
     self.passwordTextField = pwdField;
 }
 
@@ -234,9 +214,9 @@ static NSString *KTLCellReuseIdentifier = @"Cell";
     [self updateLoginButton];
 }
 
+/// Enforces a contrived username & password policy
 - (void)updateLoginButton
 {
-    // NB: contrived username & password policy
     BOOL usernameIsCompliant = ([self.usernameTextField.text length] > 0);
     BOOL passwordIsCompliant = ([self.passwordTextField.text length] > 0);
     
