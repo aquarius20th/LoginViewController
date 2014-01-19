@@ -17,6 +17,8 @@
 		165585B716948E330010783B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 165585B616948E330010783B /* Default@2x.png */; };
 		165585B916948E330010783B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 165585B816948E330010783B /* Default-568h@2x.png */; };
 		165585C116948E870010783B /* KTLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165585C016948E870010783B /* KTLLoginViewController.m */; };
+		16A38EDB188C4D4900520C08 /* KTLUsernameTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A38EDA188C4D4900520C08 /* KTLUsernameTextField.m */; };
+		16A38EDE188C4E2800520C08 /* KTLPasswordTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A38EDD188C4E2800520C08 /* KTLPasswordTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,10 @@
 		165585B816948E330010783B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		165585BF16948E870010783B /* KTLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTLLoginViewController.h; sourceTree = "<group>"; };
 		165585C016948E870010783B /* KTLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTLLoginViewController.m; sourceTree = "<group>"; };
+		16A38ED9188C4D4900520C08 /* KTLUsernameTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTLUsernameTextField.h; sourceTree = "<group>"; };
+		16A38EDA188C4D4900520C08 /* KTLUsernameTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTLUsernameTextField.m; sourceTree = "<group>"; };
+		16A38EDC188C4E2800520C08 /* KTLPasswordTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTLPasswordTextField.h; sourceTree = "<group>"; };
+		16A38EDD188C4E2800520C08 /* KTLPasswordTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTLPasswordTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +89,10 @@
 			children = (
 				165585BF16948E870010783B /* KTLLoginViewController.h */,
 				165585C016948E870010783B /* KTLLoginViewController.m */,
+				16A38ED9188C4D4900520C08 /* KTLUsernameTextField.h */,
+				16A38EDA188C4D4900520C08 /* KTLUsernameTextField.m */,
+				16A38EDC188C4E2800520C08 /* KTLPasswordTextField.h */,
+				16A38EDD188C4E2800520C08 /* KTLPasswordTextField.m */,
 				165585B116948E330010783B /* KTLAppDelegate.h */,
 				165585B216948E330010783B /* KTLAppDelegate.m */,
 				165585A916948E330010783B /* Supporting Files */,
@@ -171,8 +181,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				165585AF16948E330010783B /* main.m in Sources */,
+				16A38EDB188C4D4900520C08 /* KTLUsernameTextField.m in Sources */,
 				165585B316948E330010783B /* KTLAppDelegate.m in Sources */,
 				165585C116948E870010783B /* KTLLoginViewController.m in Sources */,
+				16A38EDE188C4E2800520C08 /* KTLPasswordTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

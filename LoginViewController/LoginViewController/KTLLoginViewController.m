@@ -8,6 +8,9 @@
 
 #import "KTLLoginViewController.h"
 
+#import "KTLPasswordTextField.h"
+#import "KTLUsernameTextField.h"
+
 @interface KTLLoginViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *loginBarButtonItem;
@@ -35,7 +38,13 @@ static CGFloat      KTLLoginTextFieldHeight = 44.0f;
 
 static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 
-#pragma mark - Initialization
+#pragma mark - UIViewController lifecycle methods
+
+- (void)didReceiveMemoryWarning
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [super didReceiveMemoryWarning];
+}
 
 - (id)init
 {
@@ -45,14 +54,6 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
         self.title = @"Contrived Service";
     }
     return self;
-}
-
-#pragma mark - UIViewController lifecycle
-
-- (void)didReceiveMemoryWarning
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidLoad
@@ -67,7 +68,7 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
     [self updateView];
 }
 
-#pragma mark - UITableViewCell
+#pragma mark - UITableViewCell methods
 
 - (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -96,7 +97,7 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
     }
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -120,14 +121,14 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
     return KTLLoginTableSectionCount;
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -154,8 +155,9 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
 	return NO;
 }
 
-#pragma mark - IBActions
+#pragma mark - IBActions methods
 
+/// Acknowledges a successful simulated login attempt
 - (IBAction)loginTapped:(id)sender
 {
     NSString *message = [NSString stringWithFormat:@"Username: %@\nPassword: %@",
@@ -187,22 +189,14 @@ static NSString *   KTLCellReuseIdentifier = @"KTLCredentialCell";
            forCellReuseIdentifier:KTLCellReuseIdentifier];
     
     // text fields
-    UITextField *userField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight)];
-    userField.keyboardType = UIKeyboardTypeEmailAddress;
-    userField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    userField.autocorrectionType = UITextAutocorrectionTypeNo;
-    userField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    CGRect credentialFieldRect = CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight);
+    
+    KTLUsernameTextField *userField = [[KTLUsernameTextField alloc] initWithFrame:credentialFieldRect];
     userField.delegate = self;
-    userField.returnKeyType = UIReturnKeyNext;
-    userField.placeholder = @"email@example.com";
     self.usernameTextField = userField;
     
-    UITextField *pwdField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, KTLLoginTextFieldWidth, KTLLoginTextFieldHeight)];
-    pwdField.secureTextEntry = YES;
-    pwdField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    KTLPasswordTextField *pwdField = [[KTLPasswordTextField alloc] initWithFrame:credentialFieldRect];
     pwdField.delegate = self;
-    pwdField.returnKeyType = UIReturnKeyGo;
-    pwdField.placeholder = @"Required";
     self.passwordTextField = pwdField;
 }
 
